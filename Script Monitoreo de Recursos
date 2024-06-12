@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# Nombre del archivo de salida
+archivo_salida="recursos.csv"
+
+# Función para obtener el tiempo en formato h:m:s
+obtener_tiempo() {
+    echo $(date +"%H:%M:%S")
+}
+
+# Función para obtener el porcentaje de uso de memoria
+obtener_uso_memoria() {
+    memoria=$(free | grep Mem | awk '{print $3}')
+    memoria_total=$(free | grep Mem | awk '{print $2}')
+    porcentaje_memoria=$(echo "scale=2; $memoria / $memoria_total * 100" | bc)
+    echo $porcentaje_memoria
+}
+
+# Función para obtener el porcentaje de uso de CPU
+obtener_uso_cpu() {
+    uso_cpu=$(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}')
+    echo $uso_cpu
+}
+
+# Función principal
+principal() {
+    intervalo=$1
+    echo "Tiempo,Memoria(%),CPU(%)" > $archivo_salida
+    while true; do
+        tiempo_actual=$(obtener_tiempo)
+        uso_memoria=$(obtener_uso_memoria)
+        uso_cpu=$(obtener_uso_cpu)
+        echo "$tiempo_actual,$uso_memoria,$uso_cpu" >> $archivo_salida
+        sleep $intervalo
+    done
+}
+
+# Verificación de argumentos
+if [ $# -ne 1 ]; then
+    echo "Uso: $0 <intervalo_en_segundos>"
+    exit 1
+fi
+
+# Ejecución principal en background
+principal $1 &
