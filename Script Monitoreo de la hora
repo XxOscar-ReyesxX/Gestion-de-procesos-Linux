@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Nombre del archivo donde se guardará la hora del sistema
+archivo="save_hour.txt"
+
+# Función para obtener la hora actual y guardarla en el archivo
+guardar_hora() {
+    date +"%H:%M:%S" >> "$archivo"
+}
+
+# Bucle infinito para ejecutar la función cada 5 segundos
+while true
+do
+    guardar_hora
+    sleep 5
+done &
