@@ -1,0 +1,28 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Leer el archivo CSV en un DataFrame de pandas
+data = pd.read_csv('recursos.csv')
+
+# Convertir la columna 'Tiempo' a tipo datetime
+data['Tiempo'] = pd.to_datetime(data['Tiempo'])
+
+# Graficar el consumo de memoria y CPU con respecto al tiempo
+plt.figure(figsize=(10, 6))
+
+plt.plot(data['Tiempo'], data['Memoria(%)'], label='Memoria', color='blue')
+plt.plot(data['Tiempo'], data['CPU(%)'], label='CPU', color='red')
+
+plt.xlabel('Tiempo')
+plt.ylabel('Porcentaje de uso')
+plt.title('Consumo de CPU y Memoria con respecto al tiempo')
+plt.legend()
+plt.grid(True)
+
+# Formatear el eje x para mostrar las horas y minutos
+plt.gca().xaxis.set_major_formatter(plt.matplotlib.dates.DateFormatter('%H:%M'))
+
+plt.xticks(rotation=45)
+
+plt.tight_layout()
+plt.show()
