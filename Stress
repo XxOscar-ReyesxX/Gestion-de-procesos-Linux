@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Función para estresar la CPU
+stresar_cpu() {
+    echo "Estresando la CPU..."
+    stress --cpu 4 --timeout 60s  # Estresar 1 núcleo durante 30 segundos
+}
+
+# Función para estresar la memoria RAM
+stresar_memoria() {
+    echo "Estresando la memoria RAM..."
+    stress --vm 2 --vm-bytes 256M --timeout 60s  # Estresar con 256 MB durante 30 segundos
+}
+
+# Función para estresar el disco duro
+stresar_disco() {
+    echo "Estresando el disco duro..."
+    stress --io 2 --hdd 2 --timeout 60s  # Estresar la E/S del disco durante 30 segundos
+}
+
+# Función para estresar CPU, memoria RAM y disco duro simultáneamente
+stresar_todo() {
+    echo "Estresando la CPU, memoria RAM y disco duro simultáneamente..."
+    stress --cpu 4 --io 2 --vm 2 --vm-bytes 128M --hdd 2 --timeout 60s
+    # Estresar 2 núcleos de CPU, 1 núcleo de E/S de disco, 1 instancia de memoria VM de 128 MB durante 30 segundos
+}
